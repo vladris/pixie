@@ -24,7 +24,7 @@ Below is the list of op codes. All operations store their result into the first 
 `mul` - multiplies the first operand by the second operand
 `div` - divides the first operand by the second operand
 `rem` - computes remainder from division of first operand by second operand
-`not` - replaces the first operand by its logical negation (second operand is ignored)
+`not` - replaces the first operand by the logical negation of the second operand
 `and` - bitwise AND between the operands
 `or` - bitwise OR between the operands
 `xor` - bitwise XOR between the operands
