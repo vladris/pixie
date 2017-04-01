@@ -97,6 +97,7 @@ Data can be any sequence of numbers. These are simply inlined in the resulting p
 <upcase-letters>  ::= <upcase-letter> [<upcase-letters>]
 <operand>         ::= ["*"] <operand-value>
 <operand-value>   ::= <register> | <number> | <label-reference>
+<label-reference> ::= ":" <upcase-letters>
 <number>          ::= <bin-number> | <dec-number> | <hex-number>
 <bin-number>      ::= "0b" { "0" | "1" }
 <dec-number>      ::= <dec-digit> {<dec-digit>}
@@ -109,7 +110,6 @@ Data can be any sequence of numbers. These are simply inlined in the resulting p
                       "or" | "xor" | "eq" | "le" | "leq" | "jnz" | "in" | "out"
 <dec-digit>       ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"   
 <hex-digit>       ::= <dec-digit> | "A" | "B" | "C" | "D" | "E" | "F"
-<label-reference> ::= ":" <upcase-letters>
 ```
 
 ## Example
