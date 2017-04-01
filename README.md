@@ -19,20 +19,35 @@ An operand is encoded in a byte as follows: it can be a register or a memory add
 Below is the list of op codes. All operations store their result into the first operand.
 
 `mov` - copies the value of the second operand into the first operand
+
 `add` - adds the second operant to the first operand
+
 `sub` - subtracts the second operand from the first operand
+
 `mul` - multiplies the first operand by the second operand
+
 `div` - divides the first operand by the second operand
+
 `rem` - computes remainder from division of first operand by second operand
+
 `not` - replaces the first operand by the logical negation of the second operand
+
 `and` - bitwise AND between the operands
+
 `or` - bitwise OR between the operands
+
 `xor` - bitwise XOR between the operands
+
 `eq` - replaces first operand by 1 if operands are equal, with 0 otherwise
+
 `le` - replaces first operand by 1 if it is less than second operand, with 0 otherwise
+
 `leq` - replaces first operand by 1 if it is less than or equal to the second operand
+
 `jnz` - moves the instruction pointer to the address supplied by the second operand if the first operand is not 0
+
 `in` - reads a word from the input port sepcified by the second operand and stores the value into the first operand
+
 `out` - outputs the first operand to the input port specified by the second operand
 
 ## I/O
