@@ -1,0 +1,7 @@
+# Countdown
+    mov r0 10
+REPEAT:
+    sub r0  1
+    out r0
+    jnz r0 :REPEAT 
+    jnz 1 0xFFFF

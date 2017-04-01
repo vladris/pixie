@@ -1,0 +1,9 @@
+# Print from data section
+    mov r0 :DATA
+    out *r0
+    add r0 1
+    out *r0
+    jnz 1 0xFFFF
+
+DATA:
+    4   2
