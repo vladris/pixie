@@ -113,7 +113,7 @@ REPEAT:
     
 ```
 
-# Implementation
+# Implementation Notes
 
 Pixie VM is fully implemented in the header `pixie.h`. `pixie.cpp` provides a simple way to load a program from a file. Expected format of a program is a text file consisting of any number of 16 bit unsigned integers separated by spaces.
 
@@ -121,3 +121,4 @@ The project comes with a VS solution file. Pixie uses C++17 std::variant so it r
 
 The assembler is implemented in Python3. It runs several passes over the source text transforming it into the final program which is output as a sequence of space-separated numbers consumable by the pixie executable.
 
+This project serves no practical purposes (see [Turing tarpit](https://en.wikipedia.org/wiki/Turing_tarpit)) and was not thoroughly tested.
