@@ -80,10 +80,6 @@ for line in content:
         # if line starts with a number it should only contain numbers 
         program += [atoi(token) for token in line]
     else:
-        # else make sure we have 2 operands (in/out only take 1), r0 is ignored
-        if len(line) == 2:
-            line += ['r0']
-
         # encode opcode and operands
         code = [op_codes.index(line[0]) << 8]
         code = encode(code, line[1], 4)

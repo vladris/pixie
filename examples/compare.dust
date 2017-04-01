@@ -1,12 +1,12 @@
 # Compares two numbers returning the greater of the two
-    in r0
-    in r1
+    in r0 0
+    in r1 0
     mov r2 r0
     le r0 r1
     jnz r0 :SECOND
-    out r2
+    out r2 0
     jnz 1 :DONE
 SECOND:
-    out r1
+    out r1 0
 DONE:
     jnz 1 0xFFFF

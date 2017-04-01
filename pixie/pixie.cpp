@@ -32,6 +32,9 @@ int main(int argc, const char *argv[])
 	auto program = load_program(argv[1]);
 
 	vm_t vm;
+	vm.connect_input([]() { word_t input; std::cin >> input; return input; });
+	vm.connect_output([](word_t output) { std::cout << output; });
+
 	vm.load(program.begin(), program.end());
 	vm.run();
 	

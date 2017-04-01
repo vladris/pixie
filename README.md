@@ -32,8 +32,8 @@ Below is the list of op codes. All operations store their result into the first 
 `le` - replaces first operand by 1 if it is less than second operand, with 0 otherwise
 `leq` - replaces first operand by 1 if it is less than or equal to the second operand
 `jnz` - moves the instruction pointer to the address supplied by the second operand if the first operand is not 0
-`in` - reads a word from the input and stores it in the first operand (second operand is ignored)
-`out` - outputs the first operand (second operand is ignored)
+`in` - reads a word from the input port sepcified by the second operand and stores the value into the first operand
+`out` - outputs the first operand to the input port specified by the second operand
 
 ## I/O
 
@@ -57,7 +57,7 @@ A label consists of any number of letters and must end with `:`:
 LABEL:
 ```
 
-An instruction consists of an op code and one or two operands. An op code is any of the op codes supported by Pixie (lower case): `mov`, `add`, `sub`, `mul`, `div`, `rem`, `not`, `and`, `or`, `xor`, `eq`, `le`, `leq`, `jnz`, `in`, `out`. 
+An instruction consists of an op code and two operands. An op code is any of the op codes supported by Pixie (lower case): `mov`, `add`, `sub`, `mul`, `div`, `rem`, `not`, `and`, `or`, `xor`, `eq`, `le`, `leq`, `jnz`, `in`, `out`. 
 An operand can be either a register or a number. Registers (lower case) are `r0`, `r1`, `r2`, `r3`, `sb`, `sp`, `pc`. Numbers can be written in decimal, hexadecimal, or binary notation, eg: 42, 0x2A, 0b101010. An operand can be optionally prefixed by `*` to mark it as a dereference:
 
 ```
@@ -77,22 +77,22 @@ Data can be any sequence of numbers. These are simply inlined in the resulting p
 <line>            ::= <comment> | <label> | <instruction> | <data>
 <comment>         ::= "#" {any characters}
 <label>           ::= <upcase-letters> ":"
-<instruction>     ::= <opcode> <operand> [<operand>]
+<instruction>     ::= <opcode> <operand> <operand>
 <data>            ::= <number>
 <upcase-letters>  ::= <upcase-letter> [<upcase-letters>]
+<operand>         ::= ["*"] <operand-value>
+<operand-value>   ::= <register> | <number> | <label-reference>
+<number>          ::= <bin-number> | <dec-number> | <hex-number>
+<bin-number>      ::= "0b" { "0" | "1" }
+<dec-number>      ::= <dec-digit> {<dec-digit>}
+<hex-number>      ::= "0x" <hex-digit> {<hex-digit>}
+<register>        ::= "r0" | "r1" | "r2" | "r3" | "r4" | "sb" | "sp" | "pc"
 <upcase-letter>   ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | 
                       "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | 
                       "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
 <opcode>          ::= "mov" | "add" | "sub" | "div" | "rem" | "not" | "and" |
                       "or" | "xor" | "eq" | "le" | "leq" | "jnz" | "in" | "out"
-<operand>         ::= ["*"] <operand-value>
-<operand-value>   ::= <register> | <number> | <label-reference>
-<register>        ::= "r0" | "r1" | "r2" | "r3" | "r4" | "sb" | "sp" | "pc"
-<number>          ::= <bin-number> | <dec-number> | <hex-number>
-<bin-number>      ::= "0b" { "0" | "1" }
-<dec-number>      ::= <dec-digit> {<dec-digit>}
 <dec-digit>       ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"   
-<hex-number>      ::= "0x" <hex-digit> {<hex-digit>}
 <hex-digit>       ::= <dec-digit> | "A" | "B" | "C" | "D" | "E" | "F"
 <label-reference> ::= ":" <upcase-letters>
 ```
@@ -105,7 +105,7 @@ Following is an example program which counts down from 10, outputs numbers, then
 # Countdown from 10
     mov r0 10
 REPEAT:
-    out r0
+    out r0 0
     sub r0 1
     jnz r0 :REPEAT
 # Pixie terminates when PC is at 0xFFFF
@@ -115,7 +115,7 @@ REPEAT:
 
 # Implementation Notes
 
-Pixie VM is fully implemented in the header `pixie.h`. `pixie.cpp` provides a simple way to load a program from a file. Expected format of a program is a text file consisting of any number of 16 bit unsigned integers separated by spaces.
+Pixie VM is fully implemented in the header `pixie.h`. `pixie.cpp` provides a simple way to load a program from a file. Expected format of a program is a text file consisting of any number of 16 bit unsigned integers separated by spaces. `pixie.cpp` instantiates a VM and connects stdin to input port 0 and stdout to output port 0.
 
 The project comes with a VS solution file. Pixie uses C++17 std::variant so it requires a compiler/STL which supports this type.
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <iostream>
 #include <variant>
 #include <vector>
@@ -50,10 +51,16 @@ struct instruction_t
 	operand_t m2;
 };
 
+using input_t = std::function<word_t()>;
+using output_t = std::function<void(word_t)>;
+
 class vm_t
 {
 public:
 	vm_t() : memory(c_memory_size) { }
+
+	void connect_input(input_t&& input) { inputs.emplace_back(input); }
+	void connect_output(output_t&& output) { outputs.emplace_back(output); }
 
 	template <typename It>
 	void load(It f, It l)
@@ -77,6 +84,8 @@ private:
 	const word_t max_word = 0xFFFF;
 	word_t registers[c_register_count];
 	std::vector<word_t> memory;
+	std::vector<input_t> inputs;
+	std::vector<output_t> outputs;
 
 	word_t& at(register_t reg) { return registers[static_cast<size_t>(reg)]; }
 	word_t& at(word_t addr)	{ return memory[addr]; }
@@ -90,9 +99,6 @@ private:
 		vm_t& vm;
 	};
 	word_t& at(operand_t& m) { return std::visit(operand_visitor_t{ *this }, m); }
-
-	word_t in() { word_t input; std::cin >> input; return input; }
-	void out(word_t output) { std::cout << output; }
 
 	operand_t decode_operand(byte_t encoded_operand)
 	{
@@ -143,8 +149,8 @@ private:
 		case op_code_t::Le:  at(instr.m1) = at(instr.m1) < at(instr.m2); break;
 		case op_code_t::Leq: at(instr.m1) = at(instr.m1) <= at(instr.m2); break;
 		case op_code_t::Jnz: if (at(instr.m1)) at(register_t::PC) = at(instr.m2) - 1; break;
-		case op_code_t::In:  at(instr.m1) = in(); break;
-		case op_code_t::Out: out(at(instr.m1)); break;
+		case op_code_t::In:  at(instr.m1) = inputs[at(instr.m2)](); break;
+		case op_code_t::Out: outputs[at(instr.m2)](at(instr.m1)); break;
 		}
 	}
 };

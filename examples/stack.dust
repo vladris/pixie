@@ -1,14 +1,14 @@
 # Pushes input on the stack until a 0 is received, then pops and prints
 PUSH:
-    in r0
+    in r0 0
     mov *sp r0
-    not r0
+    not r0 r0
     jnz r0 :POP
     add sp 1
     jnz 1 :PUSH
 
 POP:
-    out *sp
+    out *sp 0
     sub sp 1
     mov r0 sp
     le r0 sb
