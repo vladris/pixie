@@ -4,9 +4,9 @@
     mov r2 r0
     le r0 r1
     jnz r0 :SECOND
-    out r2 0
+    out 0 r2
     jnz 1 :DONE
 SECOND:
-    out r1 0
+    out 0 r2
 DONE:
     jnz 1 0xFFFF

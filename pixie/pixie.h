@@ -93,7 +93,7 @@ private:
 	struct operand_visitor_t
 	{
 		word_t& operator()(register_t reg) { return vm.at(reg); }
-		word_t& operator()(word_t& addr) { return addr; }
+		word_t& operator()(word_t& value) { return value; }
 		word_t& operator()(dereference_t& deref) { return vm.at(deref.addr); }
 
 		vm_t& vm;
@@ -150,7 +150,7 @@ private:
 		case op_code_t::Leq: at(instr.m1) = at(instr.m1) <= at(instr.m2); break;
 		case op_code_t::Jnz: if (at(instr.m1)) at(register_t::PC) = at(instr.m2) - 1; break;
 		case op_code_t::In:  at(instr.m1) = inputs[at(instr.m2)](); break;
-		case op_code_t::Out: outputs[at(instr.m2)](at(instr.m1)); break;
+		case op_code_t::Out: outputs[at(instr.m1)](at(instr.m2)); break;
 		}
 	}
 };

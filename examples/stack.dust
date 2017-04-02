@@ -8,7 +8,7 @@ PUSH:
     jnz 1 :PUSH
 
 POP:
-    out *sp 0
+    out 0 *sp
     sub sp 1
     mov r0 sp
     le r0 sb

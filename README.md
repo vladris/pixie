@@ -48,7 +48,7 @@ Below is the list of op codes. All operations store their result into the first 
 
 `in` - reads a word from the input port sepcified by the second operand and stores the value into the first operand
 
-`out` - outputs the first operand to the output port specified by the second operand
+`out` - outputs the second operand to the output port specified by the first operand
 
 ## I/O
 
