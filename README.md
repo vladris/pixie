@@ -20,7 +20,7 @@ Below is the list of op codes. All operations store their result into the first 
 
 `mov` - copies the value of the second operand into the first operand
 
-`add` - adds the second operant to the first operand
+`add` - adds the second operand to the first operand
 
 `sub` - subtracts the second operand from the first operand
 
@@ -46,7 +46,7 @@ Below is the list of op codes. All operations store their result into the first 
 
 `jnz` - moves the instruction pointer to the address supplied by the second operand if the first operand is not 0
 
-`in` - reads a word from the input port sepcified by the second operand and stores the value into the first operand
+`in` - reads a word from the input port specified by the second operand and stores the value into the first operand
 
 `out` - outputs the second operand to the output port specified by the first operand
 
