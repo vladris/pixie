@@ -22,7 +22,7 @@ registers = ['r0', 'r1', 'r2', 'r3', 'sb', 'sp', 'pc', '__value', '*r0',
 def op(token):
     if token not in registers:
         # if not a register, replace with '__value', keeping dereference prefix
-        token = ('*' if token[0] == 0 else '') + '__value'
+        token = ('*' if token[0] == '*' else '') + '__value'
     # encoded operand is index in register list
     return registers.index(token)
 
@@ -38,11 +38,9 @@ def parse(line):
         return line
     elif line[0] in op_codes:
         # for instruction, expand it to op code, encoded operands, and values
-        expanded = [op_codes.index(line[0]), op(line[1]),
-            op(line[2])] + value(line[1]) + value(line[2])
-        # then encode op code and operands into a single word
-        return [int(expanded[0]) << 8 | int(expanded[1]) << 4 |
-            int(expanded[2])] + expanded[3:]
+        # and encode op code and operands into a single word
+        return [int(op_codes.index(line[0])) << 8 | int(op(line[1])) << 4 |
+            int(op(line[2]))] + value(line[1]) + value(line[2])
     else:
         # otherwise we have a label, leave it be for now 
         return [line[0]]
