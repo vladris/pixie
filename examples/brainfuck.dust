@@ -3,7 +3,8 @@
 # Expected input is ASCII-encoded brainfuck commands entered individually
 # (ASCII ord(command character) followed by newline), then a 0 followed by a
 # newline which starts execution. Additional inputs requested by the brainfuck
-# program itself can be supplied in a similar manner.
+# program itself can be supplied in a similar manner. Check out the test cases
+# in ../test/run.py for sample encoding/decoding.
 
 START:
 # Read brainfuck program until a zero is received
