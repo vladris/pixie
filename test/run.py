@@ -3,12 +3,33 @@ import subprocess
 
 import sys
 
+# prep input to make it consumable by the pixie executable
+def prep(s):
+    return ('\n'.join(s) + '\n').encode('ascii')
+
 test_cases = {
-    '42': [('', b'42')],
-    'add': [(b'1\n1\n', b'2'),
-            (b'5\n6\n', b'11')],
-    'countdown': [(b'', b'10987654321')],
-    'stack': [(b'1\n2\n3\n4\n5\n6\n0\n', b'0654321')],
+    '42':
+        [('', b'42')],
+
+    'add':
+        [(prep('11'), b'2'),
+         (prep('56'), b'11')],
+
+    'countdown':
+        [(b'', b'10987654321')],
+
+    'stack':
+        [(prep('1234560'), b'0654321')],
+
+    'brainfuck':
+         # 2 + 5 in brainfuck
+        [(prep([str(ord(c)) for c in '++>+++++[<+>-]<.'] + ['0']), b'7'),
+         # Hello world in brainfuck
+         (prep([str(ord(c)) for c in '++++++++[>++++[>++>+++>+++>+<<<<-'
+                                     ']>+>+>->>+[<]<-]>>.>---.+++++++..+'
+                                     '++.>>.<-.<.+++.------.--------.>>+'
+                                     '.>++.'] + ['0']),
+                ''.join([str(ord(c)) for c in 'Hello World!\n']).encode('ascii'))]
 }
 
 failures = []
@@ -20,7 +41,6 @@ for program in test_cases:
         f'..\\examples\\{program}.dust',
         f'{program}.pixie'])
 
-    
     for program_in, program_out in test_cases[program]:
         p = subprocess.Popen(['..\\pixie\\vs\\Debug\\pixie.exe',
               f'{program}.pixie'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)

@@ -1,0 +1,148 @@
+# Brainfuck interpreter
+#
+# Expected input is ASCII-encoded brainfuck commands entered individually
+# (ASCII ord(command character) followed by newline), then a 0 followed by a
+# newline which starts execution. Additional inputs requested by the brainfuck
+# program itself can be supplied in a similar manner.
+
+START:
+# Read brainfuck program until a zero is received
+    in r0 0
+    mov *sp r0
+    add sp 1
+    jnz r0 :START
+    sub sp 1
+
+# R3 tracks of end of program
+    mov r3 sp
+
+# Zero out 10K cells
+    mov r1 10000
+    add r1 sp
+    mov r2 sp
+ZERO_OUT:
+    mov *r2 0
+    add r2 1
+    mov r0 r1
+    leq r0 r2
+    jnz r0 :ZERO_OUT
+
+# Start running program
+    mov r2 sb
+    sub r2 1
+RUN:
+    add r2 1
+    mov r0 r3
+    leq r0 r2
+    jnz r0 0xFFFF
+
+# Code for >
+    mov r0 62
+    eq r0 *r2
+    jnz r0 :INCREMENT_DATA_POINTER
+# Code for <
+    mov r0 60
+    eq r0 *r2
+    jnz r0 :DECREMENT_DATA_POINTER
+# Code for +
+    mov r0 43
+    eq r0 *r2
+    jnz r0 :INCREMENT_BYTE
+# Code for -
+    mov r0 45
+    eq r0 *r2
+    jnz r0 :DECREMENT_BYTE
+# Code for .
+    mov r0 46
+    eq r0 *r2
+    jnz r0 :OUTPUT
+# Code for ,
+    mov r0 44
+    eq r0 *r2
+    jnz r0 :INPUT
+# Code for [
+    mov r0 91
+    eq r0 *r2
+    jnz r0 :JUMP_FORWARD_IF_ZERO
+# Code for ]
+    mov r0 93
+    eq r0 *r2
+    jnz r0 :JUMP_BACKWARD_IF_NOT_ZERO
+    jnz 1 :RUN
+
+INCREMENT_DATA_POINTER:
+    add sp 1
+    jnz 1 :RUN
+
+DECREMENT_DATA_POINTER:
+    sub sp 1
+    jnz 1 :RUN
+
+INCREMENT_BYTE:
+    add *sp 1
+    jnz 1 :RUN
+
+DECREMENT_BYTE:
+    sub *sp 1
+    jnz 1 :RUN
+
+OUTPUT:
+    out 0 *sp
+    jnz 1 :RUN
+
+INPUT:
+    in *sp 0
+    jnz 1 :RUN
+
+JUMP_FORWARD_IF_ZERO:
+    jnz *sp :RUN
+    mov r1 1
+REPEAT1:
+    add r2 1
+    mov r0 *r2
+    eq r0 91
+    not r0 r0
+    jnz r0 :CHECK_RPAR
+# On [
+    add r1 1
+    jnz 1 :REPEAT1
+CHECK_RPAR:
+    mov r0 *r2
+    eq r0 93
+    not r0 r0
+    jnz r0 :REPEAT1
+# On ]
+    sub r1 1
+    mov r0 r1
+    eq r0 0
+    not r0 r0
+    jnz r0 :REPEAT1
+# Found matching ]
+    jnz 1 :RUN
+
+JUMP_BACKWARD_IF_NOT_ZERO:
+    not r0 *sp
+    jnz r0 :RUN
+    mov r1 1
+REPEAT2:
+    sub r2 1
+    mov r0 *r2
+    eq r0 93
+    not r0 r0
+    jnz r0 :CHECK_LPAR
+# On ]
+    add r1 1
+    jnz 1 :REPEAT2
+CHECK_LPAR:
+    mov r0 *r2
+    eq r0 91
+    not r0 r0
+    jnz r0 :REPEAT2
+# On [
+    sub r1 1
+    mov r0 r1
+    eq r0 0
+    not r0 r0
+    jnz r0 :REPEAT2
+# Found matching [
+    jnz 1 :RUN
