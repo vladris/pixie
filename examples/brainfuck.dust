@@ -7,14 +7,14 @@
 # in ../test/run.py for sample encoding/decoding.
 
 START:
-# Read brainfuck program until a zero is received
+# Read brainfuck program until a zero is encountered
     in r0 0
     mov *sp r0
     add sp 1
     jnz r0 :START
     sub sp 1
 
-# R3 tracks of end of program
+# R3 tracks end of program
     mov r3 sp
 
 # Zero out 10K cells
