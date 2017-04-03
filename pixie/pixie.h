@@ -68,7 +68,7 @@ public:
 		std::copy(f, l, memory.begin());
 
 		at(register_t::PC) = 0;
-		at(register_t::SB) = at(register_t::SP) = std::distance(f, l);
+		at(register_t::SB) = at(register_t::SP) = static_cast<word_t>(std::distance(f, l));
 		at(register_t::R0) = at(register_t::R1) = at(register_t::R2) = at(register_t::R3) = 0;
 	}
 
@@ -100,25 +100,18 @@ private:
 	};
 	word_t& at(operand_t& m) { return std::visit(operand_visitor_t{ *this }, m); }
 
-	operand_t decode_operand(byte_t encoded_operand)
+	operand_t decode_operand(byte_t operand)
 	{
 		// 0b1000 bit marks the operand as a dereference
-		bool deref = encoded_operand & 8;
-		encoded_operand &= 7;
-		operand_t result;
+		if (operand & 0b1000)
+			return dereference_t{ at(decode_operand(operand & 0b0111)) };
 
 		// 0b0111 marks the operand as a word to be read from the program code
-		if (encoded_operand == 7)
-			result = at(++at(register_t::PC));
+		if (operand == 0b0111)
+			return at(++at(register_t::PC));
+		
 		// All other possible values encode registers
-		else
-			result = static_cast<register_t>(encoded_operand);
-	
-		// Once operand is initialized, dereference it if it is a dereference
-		if (deref)
-			result = dereference_t{ at(result) };
-
-		return result;
+		return static_cast<register_t>(operand);
 	}
 
 	instruction_t decode_instruction(word_t word)
