@@ -112,7 +112,7 @@ Data can be any sequence of numbers. These are simply inlined in the resulting p
 <hex-digit>       ::= <dec-digit> | "A" | "B" | "C" | "D" | "E" | "F"
 ```
 
-## Example
+## Examples
 
 Following is an example program which counts down from 10, outputs numbers, then terminates:
 
@@ -127,6 +127,8 @@ REPEAT:
     jnz 1 0xFFFF
     
 ```
+
+For a more complex example, check out the [Brainfuck](https://en.wikipedia.org/wiki/Brainfuck) interpreter [here](https://github.com/vladris/pixie/blob/master/examples/brainfuck.dust).
 
 # Implementation Notes
 
