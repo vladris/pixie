@@ -91,21 +91,21 @@ Data can be any sequence of numbers. These are simply inlined in the resulting p
 <program>         ::= {<line>}
 <line>            ::= <comment> | <label> | <instruction> | <data>
 <comment>         ::= "#" {any characters}
-<label>           ::= <upcase-letters> ":"
+<label>           ::= <label-chars> ":"
 <instruction>     ::= <opcode> <operand> <operand>
 <data>            ::= <number>
-<upcase-letters>  ::= <upcase-letter> [<upcase-letters>]
+<label-chars>     ::= <label-char> [<label-chars>]
 <operand>         ::= ["*"] <operand-value>
 <operand-value>   ::= <register> | <number> | <label-reference>
-<label-reference> ::= ":" <upcase-letters>
+<label-reference> ::= ":" <label-chars>
 <number>          ::= <bin-number> | <dec-number> | <hex-number>
 <bin-number>      ::= "0b" { "0" | "1" }
 <dec-number>      ::= <dec-digit> {<dec-digit>}
 <hex-number>      ::= "0x" <hex-digit> {<hex-digit>}
 <register>        ::= "r0" | "r1" | "r2" | "r3" | "r4" | "sb" | "sp" | "pc"
-<upcase-letter>   ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | 
+<label-char>      ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | 
                       "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | 
-                      "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+                      "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "_"
 <opcode>          ::= "mov" | "add" | "sub" | "div" | "rem" | "not" | "and" |
                       "or" | "xor" | "eq" | "le" | "leq" | "jnz" | "in" | "out"
 <dec-digit>       ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"   
