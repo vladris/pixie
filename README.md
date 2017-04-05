@@ -15,6 +15,23 @@ REPEAT:
     jnz 1 0xFFFF  
 ```
 
+Assemble:
+
+```
+dust.py countdown.dust countdown.pixie
+```
+
+Run:
+
+```
+pixie countdown.pixie
+```
+
+Output:
+```
+10987654321
+```
+
 For a more complex example, check out the [Brainfuck](https://en.wikipedia.org/wiki/Brainfuck) interpreter [here](https://github.com/vladris/pixie/blob/master/examples/brainfuck.dust).
 
 This project serves no practical purposes (see [Turing tarpit](https://en.wikipedia.org/wiki/Turing_tarpit)) and was not thoroughly tested. For more details, check out the [wiki](https://github.com/vladris/pixie/wiki/).
