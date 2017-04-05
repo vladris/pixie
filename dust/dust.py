@@ -43,12 +43,12 @@ def parse(line):
             int(op(line[2]))] + value(line[1]) + value(line[2])
     else:
         # otherwise we have a label, leave it be for now 
-        return [line[0]]
+        return line
 
 # parse lines, determine index of each label
 program, labels, offset = [], {}, 0
 for token in sum([parse(line) for line in content], []):
-    if isinstance(token, str) and token[-1] == ':':
+    if str(token)[-1] == ':':
         labels[':' + token[:-1]] = offset
     else:
         offset += 1
