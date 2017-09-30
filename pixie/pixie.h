@@ -7,11 +7,10 @@
 
 namespace pixie {
 
-using byte_t = uint8_t;
 using word_t = uint16_t;
 
 // VM op codes
-enum class op_code_t : byte_t
+enum class op_code_t : uint8_t
 {
 	Mov, // Move data
 	Add, Sub, Mul, Div, Rem, // Arithmetic
@@ -25,7 +24,7 @@ enum class op_code_t : byte_t
 const size_t c_op_count = 16;
 
 // VM registers
-enum class register_t : byte_t
+enum class register_t : uint8_t
 {
 	R0, R1, R2, R3, // General purpose registers
 	SB, SP, // Stack
@@ -93,12 +92,12 @@ private:
 	word_t& at(value_t& value) { return value.value; }
 
 	// Given an operand, forward to one of the at functions
-	word_t& at(operand_t& m) 
+	word_t& at(operand_t& m)
 	{
 		return std::visit([this](auto&& arg) -> word_t& { return at(std::forward<decltype(arg)>(arg)); }, m);
 	}
 
-	operand_t decode_operand(byte_t operand)
+	operand_t decode_operand(uint8_t operand)
 	{
 		// 0b1000 bit marks the operand as a dereference (address)
 		if (operand & 0b1000)
@@ -107,7 +106,7 @@ private:
 		// 0b0111 marks the operand as a word value to be read from the program code
 		if (operand == 0b0111)
 			return value_t{ at(++at(register_t::PC)) };
-		
+
 		// All other possible values encode registers
 		return static_cast<register_t>(operand);
 	}
